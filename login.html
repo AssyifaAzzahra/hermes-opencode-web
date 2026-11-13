@@ -4,35 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login — Hermes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      /* Soft green palette */
       --bg: #f0fdf4;
-      --bg-gradient: linear-gradient(135deg, #ecfdf5 0%, #dcfce7 50%, #bbf7d0 100%);
-      --card: #ffffff;
-      --card-border: #bbf7d0;
+      --bg-gradient: linear-gradient(135deg, #065f46 0%, #134e4a 30%, #166534 60%, #22c55e 100%);
+      --card: rgba(255, 255, 255, 0.78);
+      --card-border: rgba(255, 255, 255, 0.55);
       --primary: #22c55e;
       --primary-hover: #15803d;
       --primary-light: #86efac;
       --primary-soft: #f0fdf4;
       --text: #14532d;
-      --text-muted: #64748b;
-      --border: #bbf7d0;
+      --text-muted: #4b5563;
+      --border: rgba(255, 255, 255, 0.55);
       --border-focus: #22c55e;
       --danger: #ef4444;
       --danger-soft: #fef2f2;
-      --radius: 14px;
-      --shadow: 0 12px 40px rgba(34, 197, 94, 0.12);
-      --input-bg: #f0fdf4;
-      --input-border: #bbf7d0;
-      --status-bg: #ecfdf5;
-      --status-border: #a7f3d0;
+      --radius: 16px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+      --radius-sm: 12px;
+      --font: "Poppins", system-ui, -apple-system, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-family: var(--font);
       background: var(--bg);
       background-image: var(--bg-gradient);
       color: var(--text);
@@ -42,53 +40,211 @@
       justify-content: center;
       padding: 24px;
       margin: 0;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      padding: 36px 32px 28px;
-      box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
     }
 
-    /* Soft green accent line above card */
-    .card::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: linear-gradient(90deg, #22c55e, #86efac, #22c55e);
-      border-radius: 2px;
+    /* ── Animated background blobs ── */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.28;
+      animation: blobMotion 18s ease-in-out infinite alternate;
+    }
+    .bg-blob-1 {
+      width: 440px; height: 440px; top: -140px; left: -100px;
+      background: radial-gradient(circle, #22c55e, #15803d);
+      animation-delay: 0s;
+    }
+    .bg-blob-2 {
+      width: 340px; height: 340px; bottom: -80px; right: -80px;
+      background: radial-gradient(circle, #34d399, #15803d);
+      animation-delay: -4s;
+    }
+    .bg-blob-3 {
+      width: 260px; height: 260px; top: 50%; left: 10%;
+      background: radial-gradient(circle, #86efac, #15803d);
+      animation-delay: -8s;
+    }
+    .bg-blob-4 {
+      width: 200px; height: 200px; bottom: -20px; left: 55%;
+      background: radial-gradient(circle, #4ade80, #15803d);
+      animation-delay: -2s;
+    }
+    .bg-blob-5 {
+      width: 170px; height: 170px; top: 30%; right: 12%;
+      background: radial-gradient(circle, #22c55e, #15803d);
+      animation-delay: -6s;
+    }
+    .bg-blob-6 {
+      width: 150px; height: 150px; bottom: 10%; left: 8%;
+      background: radial-gradient(circle, #34d399, #15803d);
+      animation-delay: -10s;
+    }
+    @keyframes blobMotion {
+      0%   { transform: translate(0, 0) scale(1); opacity: 0.22; }
+      33%  { transform: translate(45px, -35px) scale(1.1); opacity: 0.42; }
+      66%  { transform: translate(-32px, 22px) scale(0.94); opacity: 0.28; }
+      100% { transform: translate(12px, 12px) scale(1.02); opacity: 0.22; }
     }
 
-    .card-header { text-align: center; margin-bottom: 24px; }
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
 
-    .avatar {
-      width: 58px;
-      height: 58px;
+    /* ── Left panel: branding ── */
+    .branding {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand-logo .logo-icon {
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: linear-gradient(135deg, #22c55e, #34d399);
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 700;
-      margin-bottom: 14px;
-      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.35);
+      position: relative;
+      overflow: hidden;
     }
 
-    .card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .brand-logo .logo-icon::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+      pointer-events: none;
+    }
 
-    .card p { color: var(--text-muted); font-size: 14px; }
+    .brand-logo h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo .logo-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .tagline {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    /* Abstract shapes */
+    .brand-shapes {
+      position: absolute;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,197,94,0.3), rgba(34,197,94,0.05));
+      animation: floatShape 6s ease-in-out infinite;
+    }
+    .shape-1 { width: 76px; height: 76px; border-radius: 50%; }
+    .shape-2 { width: 38px; height: 38px; border-radius: 50%; animation-delay: -2.5s; }
+    .shape-3 { width: 46px; height: 46px; border-radius: 50%; animation-delay: -5s; }
+    .shape-4 { width: 66px; height: 66px; border-radius: 50%; animation-delay: -1.2s; }
+
+    @keyframes floatShape {
+      0%   { transform: translateY(0) scale(1); opacity: 0.45; }
+      50%  { transform: translateY(-18px) scale(1.06); opacity: 0.9; }
+      100% { transform: translateY(0) scale(1); opacity: 0.45; }
+    }
+
+    /* ── Right panel: form ── */
+    .form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      padding: 36px 32px 28px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(34,197,94,0.14), rgba(34,197,94,0.04));
+      pointer-events: none;
+    }
+
+    .card-header { text-align: center; margin-bottom: 28px; }
+
+    .card-header .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .card-header .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
 
     .field { margin-bottom: 18px; }
 
@@ -108,77 +264,166 @@
       color: var(--text-muted);
       pointer-events: none;
       display: flex;
-      font-size: 17px;
-      line-height: 1;
+      align-items: center;
+      transition: color 0.2s;
     }
 
     .input-wrap input {
       width: 100%;
-      padding: 13px 16px 13px 42px;
-      background: var(--input-bg);
-      border: 2px solid var(--input-border);
-      border-radius: 10px;
+      padding: 12px 14px 12px 42px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
       color: var(--text);
       font-size: 15px;
-      font-family: inherit;
+      font-family: var(--font);
       transition: border-color 0.25s, box-shadow 0.25s;
     }
 
     .input-wrap input:focus {
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .input-wrap input::placeholder { color: #94a3b8; }
 
-    .error {
-      color: var(--danger);
-      font-size: 13px;
-      min-height: 0;
-      margin-top: 4px;
+    .input-wrap .toggle-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+
+    .input-wrap .toggle-btn:hover { color: var(--text); }
+
+    .input-wrap .toggle-btn .eye-hide { display: none; }
+
+    /* ── Options & divide ── */
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-weight: 400;
+    }
+
+    .options label input { accent-color: var(--primary); }
+
+    .options a {
+      color: var(--primary);
+      text-decoration: none;
       font-weight: 500;
     }
 
-    .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+    .options a:hover { text-decoration: underline; }
 
-    .btn {
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius-sm);
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-google:hover {
+      background: #f9fafb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .btn-google:active { transform: translateY(0); }
+
+    .btn-google .google-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .google-logo path {
+      fill: #EA4335;
+    }
+
+    /* ── Submit button ── */
+    .btn-primary {
+      width: 100%;
       padding: 14px;
       background: linear-gradient(135deg, #22c55e, #15803d);
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       font-size: 15px;
       font-weight: 600;
-      font-family: inherit;
+      font-family: var(--font);
       cursor: pointer;
       transition: transform 0.15s, box-shadow 0.2s;
       box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
     }
 
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4); }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+    }
 
-    .btn:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25); }
+    .btn-primary:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25); }
 
-    .btn-block { width: 100%; }
-
-    .btn:disabled {
+    .btn-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
-    .options { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 14px; }
-
-    .options a { color: var(--primary); text-decoration: none; font-weight: 500; }
-
-    .options a:hover { text-decoration: underline; color: #15803d; }
-
+    /* ── Status & footer ── */
     .status {
-      margin-top: 16px;
+      margin-top: 14px;
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       font-size: 14px;
       display: none;
     }
@@ -199,114 +444,260 @@
       border-left: 4px solid #ef4444;
     }
 
-    .footer-note { text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-muted); }
+    .footer-text {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
 
-    .footer-note a { color: var(--primary); font-weight: 500; text-decoration: none; }
-    .footer-note a:hover { color: #15803d; text-decoration: underline; }
+    .footer-text a {
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: none;
+    }
 
-    /* Responsive */
+    .footer-text a:hover { text-decoration: underline; }
+
+    /* ── Page entrance animation ── */
+    .container {
+      animation: fadeSlideIn 0.6s ease-out;
+    }
+
+    @keyframes fadeSlideIn {
+      0%   { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive: mobile single column ── */
+    @media (max-width: 860px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 16px;
+      }
+
+      .branding {
+        order: 0;
+        padding: 12px 0;
+      }
+
+      .form-panel {
+        order: 1;
+      }
+
+      .branding .brand-shapes {
+        display: none;
+      }
+
+      .brand-logo .logo-icon { width: 56px; height: 56px; font-size: 22px; }
+      .brand-logo h1 { font-size: 22px; }
+      .tagline { font-size: 14px; max-width: 260px; }
+    }
+
     @media (max-width: 480px) {
-      .card { padding: 24px 20px 20px; border-radius: 12px; }
-      .avatar { width: 50px; height: 50px; font-size: 20px; }
-      .card h1 { font-size: 19px; }
-      .btn { padding: 12px; font-size: 14px; }
+      .container { padding: 12px; }
+      .card { padding: 20px 18px 18px; border-radius: 12px; }
+      .brand-logo h1 { font-size: 18px; }
+      .tagline { font-size: 13px; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-header">
-      <div class="avatar">✦</div>
-      <h1>Login ke aplikasi</h1>
-      <p>Masuk untuk melanjutkan ke dashboard.</p>
+  <!-- Animated background blobs -->
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <div class="bg-blob bg-blob-4"></div>
+  <div class="bg-blob bg-blob-5"></div>
+  <div class="bg-blob bg-blob-6"></div>
+
+  <main class="container">
+    <!-- Left panel: branding -->
+    <div class="branding">
+      <div class="brand-logo">
+        <div class="logo-icon">✦</div>
+        <h1>Her<span class="accent">mes</span></h1>
+        <p class="logo-sub">Aplikasi Manajemen Proyek</p>
+      </div>
+      <p class="tagline">
+        Manajemen proyek yang ringan, cepat, dan modern.
+        Cocok untuk tim yang belajar mengelola pekerjaan bersama.
+      </p>
+      <div class="brand-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+      </div>
     </div>
 
-    <form id="loginForm" novalidate>
-      <div class="field">
-        <label for="email">Email atau username</label>
-        <div class="input-wrap">
-          <span class="icon">@</span>
-          <input
-            id="email"
-            name="email"
-            type="text"
-            placeholder="masukkan email atau username"
-            autocomplete="username"
-            required
-          />
+    <!-- Right panel: form -->
+    <div class="form-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Halo, kembali</h2>
+          <p class="card-desc">Masuk untuk melanjutkan ke dashboard.</p>
         </div>
+
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Email atau username</label>
+            <div class="input-wrap">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M2 7l10 6 10-6" />
+              </svg>
+              <input type="text" id="email" name="email" placeholder="email@contoh.com" autocomplete="username" />
+              <button type="button" class="toggle-btn" id="toggleEmail" aria-label="Show email">
+                <svg class="eye" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-hide" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 1 1 8 2.93" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Kata sandi</label>
+            <div class="input-wrap">
+              <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="9" rx="2" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              </svg>
+              <input type="password" id="password" name="password" placeholder="kata sandi" autocomplete="current-password" />
+              <button type="button" class="toggle-btn" id="togglePassword" aria-label="Show password">
+                <svg class="eye" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-hide" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 1 1 8 2.93" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="options">
+            <label>
+              <input type="checkbox" /> Ingat saya
+            </label>
+            <a href="#">Lupa kata sandi?</a>
+          </div>
+
+          <button class="btn-primary" type="submit">Masuk</button>
+
+          <div class="divider">
+            <span>ATAU</span>
+          </div>
+
+          <button type="button" class="btn-google">
+            <svg class="google-logo" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M12 7.5c1.6 0 3 .7 4.2 1.4.9-.8 2.5-1.3 4.2-1.4 2 .7 3.3 1.9 4.4 3.2l-1.5 1.1c-.6-.8-1.5-1.4-2.6-1.4-1.6 0-3 .7-4.2 1.4-1-.8-2.7-1.4-4.4-1.4-1.7 0-3 .7-4.4 1.4l1.5-1.1c.8.9 1.6 1.8 2.5 2.4l-1.5 1.1c-.7-.8-1.5-1.4-2.6-1.4-1.6 0-3 .7-4.2 1.4-1-.8-2.7-1.4-4.4-1.4-1.7 0-3 .7-4.4 1.4l1.5-1.1c.7.8 1.5 1.4 2.5 2.4z"/>
+            </svg>
+            <span>Masuk dengan Google</span>
+          </button>
+
+          <div class="status" id="statusBox"></div>
+        </form>
+
+        <p class="footer-text">
+          Belum punya akun? <a href="#">Daftar</a>
+        </p>
       </div>
-
-      <div class="field">
-        <label for="password">Kata sandi</label>
-        <div class="input-wrap">
-          <span class="icon">●</span>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="masukkan kata sandi"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-      </div>
-
-      <div class="error" id="errorBox"></div>
-
-      <div class="actions">
-        <button class="btn btn-block" type="submit">Masuk</button>
-      </div>
-
-      <div class="options">
-        <label>
-          <input type="checkbox" /> Ingat saya
-        </label>
-        <a href="#">Lupa kata sandi?</a>
-      </div>
-    </form>
-
-    <div class="status" id="statusBox"></div>
-
-    <div class="footer-note">
-      Belum punya akun? <a href="#">Daftar</a>
     </div>
-  </div>
+  </main>
 
   <script>
     (function () {
       var form = document.getElementById("loginForm");
       var email = document.getElementById("email");
       var password = document.getElementById("password");
+      var toggleEmail = document.getElementById("toggleEmail");
+      var togglePassword = document.getElementById("togglePassword");
       var errorBox = document.getElementById("errorBox");
       var statusBox = document.getElementById("statusBox");
+
+      // Password show/hide toggle
+      togglePassword.addEventListener("click", function () {
+        var type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        var eyeIcon = togglePassword.querySelector(".eye");
+        var eyeHide = togglePassword.querySelector(".eye-hide");
+        if (type === "password") {
+          eyeIcon.style.display = "block";
+          eyeHide.style.display = "none";
+        } else {
+          eyeIcon.style.display = "none";
+          eyeHide.style.display = "block";
+        }
+      });
+
+      toggleEmail.addEventListener("click", function () {
+        var type = email.getAttribute("type") === "text" ? "password" : "text";
+        email.setAttribute("type", type);
+        var eyeIcon = toggleEmail.querySelector(".eye");
+        var eyeHide = toggleEmail.querySelector(".eye-hide");
+        if (type === "text") {
+          eyeIcon.style.display = "block";
+          eyeHide.style.display = "none";
+        } else {
+          eyeIcon.style.display = "none";
+          eyeHide.style.display = "block";
+        }
+        email.focus();
+      });
+
+      // Validate all at once
+      var validators = {
+        email: function (val) {
+          if (!val) return "Email atau username wajib diisi.";
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) return "Format email tidak valid.";
+          return "";
+        },
+        password: function (val) {
+          if (!val) return "Kata sandi wajib diisi.";
+          if (val.length < 4) return "Kata sandi minimal 4 karakter.";
+          return "";
+        }
+      };
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         errorBox.className = "error";
         errorBox.textContent = "";
 
-        var value = email.value.trim();
-        if (!value) {
-          showError("Email atau username wajib diisi.");
-          email.focus();
+        var results = {};
+        var allValid = true;
+        for (var key in validators) {
+          if (validators.hasOwnProperty(key)) {
+            results[key] = validators[key](form[key].value);
+            if (results[key]) {
+              allValid = false;
+            }
+          }
+        }
+
+        if (!allValid) {
+          var invalidFields = form.querySelectorAll("input");
+          for (var i = 0; i < invalidFields.length; i++) {
+            if (invalidFields[i].value && validators[invalidFields[i].id] && validators[invalidFields[i].id](invalidFields[i].value)) {
+              invalidFields[i].style.borderColor = "#ef4444";
+              invalidFields[i].style.boxShadow = "0 0 0 4px rgba(239, 68, 68, 0.12)";
+            } else {
+              invalidFields[i].style.borderColor = "";
+              invalidFields[i].style.boxShadow = "";
+            }
+          }
           return;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          showError("Format email tidak valid.");
-          email.focus();
-          return;
-        }
-
-        if (password.value.length < 4) {
-          showError("Kata sandi minimal 4 karakter.");
-          password.focus();
-          return;
-        }
-
-        // Placeholder for a real backend call.
-        // On success, forward to the app's dashboard.
+        // Simulate login
         statusBox.className = "status success";
         statusBox.textContent = "Memproses login…";
         statusBox.style.display = "block";
