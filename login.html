@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Hermes</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --surface: #1a1d24;
+      --surface-hover: #232732;
+      --border: #2a2f3a;
+      --text: #e6e8ee;
+      --text-muted: #8b8f98;
+      --primary: #6366f1;
+      --primary-hover: #7c7ff5;
+      --danger: #ef4444;
+      --radius: 10px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header { text-align: center; margin-bottom: 24px; }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #a855f7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+
+    .card p { color: var(--text-muted); font-size: 14px; }
+
+    .field { margin-bottom: 18px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap .icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .input-wrap input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .input-wrap input::placeholder { color: var(--text-muted); }
+
+    .error {
+      color: var(--danger);
+      font-size: 13px;
+      min-height: 0;
+      margin-top: 4px;
+    }
+
+    .actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+
+    .btn {
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: var(--primary-hover); }
+
+    .btn:active { transform: translateY(1px); }
+
+    .btn-block { width: 100%; }
+
+    .options { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 14px; }
+
+    .options a { color: var(--primary); text-decoration: none; }
+
+    .options a:hover { text-decoration: underline; }
+
+    .status {
+      margin-top: 16px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.12);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .footer-note { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar">✦</div>
+      <h1>Login ke aplikasi</h1>
+      <p>Masuk untuk melanjutkan ke dashboard.</p>
+    </div>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email atau username</label>
+        <div class="input-wrap">
+          <span class="icon">@</span>
+          <input
+            id="email"
+            name="email"
+            type="text"
+            placeholder="masukkan email atau username"
+            autocomplete="username"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Kata sandi</label>
+        <div class="input-wrap">
+          <span class="icon">●</span>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="masukkan kata sandi"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="error" id="errorBox"></div>
+
+      <div class="actions">
+        <button class="btn btn-block" type="submit">Masuk</button>
+      </div>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" /> Ingat saya
+        </label>
+        <a href="#">Lupa kata sandi?</a>
+      </div>
+    </form>
+
+    <div class="status" id="statusBox"></div>
+
+    <div class="footer-note">
+      Belum punya akun? <a href="#">Daftar</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById("loginForm");
+      var email = document.getElementById("email");
+      var password = document.getElementById("password");
+      var errorBox = document.getElementById("errorBox");
+      var statusBox = document.getElementById("statusBox");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        errorBox.className = "error";
+        errorBox.textContent = "";
+
+        var value = email.value.trim();
+        if (!value) {
+          showError("Email atau username wajib diisi.");
+          email.focus();
+          return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          showError("Format email tidak valid.");
+          email.focus();
+          return;
+        }
+
+        if (password.value.length < 4) {
+          showError("Kata sandi minimal 4 karakter.");
+          password.focus();
+          return;
+        }
+
+        // Placeholder for a real backend call.
+        // On success, forward to the app's dashboard.
+        statusBox.className = "status success";
+        statusBox.textContent = "Memproses login…";
+        statusBox.style.display = "block";
+        form.querySelector("button[type=submit]").disabled = true;
+
+        setTimeout(function () {
+          statusBox.textContent = "Login berhasil. Mengalihkan…";
+          // window.location.href = "/dashboard";
+        }, 800);
+      });
+
+      function showError(msg) {
+        errorBox.className = "error";
+        errorBox.textContent = msg;
+      }
+    })();
+  </script>
+</body>
+</html>
