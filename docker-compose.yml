@@ -1,0 +1,12 @@
+name: hermes-opencode-web
+
+services:
+  web:
+    build: .
+    image: ghcr.io/${BUILD_USER}/hermes-opencode-web:latest
+    container_name: hermes-opencode-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    environment:
+      - BUILD_ENV=production

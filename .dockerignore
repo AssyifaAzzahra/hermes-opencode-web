@@ -1,0 +1,15 @@
+# Dependencies / artifacts
+node_modules/
+.build/
+dist/
+
+# Environment secrets
+.env
+.env.local
+*.env*
+
+# OS / editor
+.DS_Store
+*.log
+.gitignore
+docker-compose.yml
